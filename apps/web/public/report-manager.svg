@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Report Manager">
+  <rect width="512" height="512" rx="112" fill="#153c3a"/>
+  <path d="M150 104h160l72 72v232H150z" fill="#f4f1e8"/>
+  <path d="M310 104v72h72" fill="none" stroke="#d07a4a" stroke-width="28" stroke-linejoin="round"/>
+  <path d="M204 240h124M204 296h124M204 352h82" fill="none" stroke="#153c3a" stroke-width="24" stroke-linecap="round"/>
+</svg>
