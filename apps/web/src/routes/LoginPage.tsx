@@ -1,12 +1,4 @@
-import {
-  ArrowRight,
-  Eye,
-  EyeOff,
-  Hammer,
-  Lock,
-  Mail,
-  ShieldCheck,
-} from 'lucide-react';
+import { ArrowRight, Eye, EyeOff, Hammer, Lock, Mail } from 'lucide-react';
 import { useState, type FormEvent } from 'react';
 
 import { Button } from '../components/ui/button.js';
@@ -131,15 +123,6 @@ export function LoginPage() {
                   )}
                 </button>
               </div>
-              <div className="flex justify-end">
-                <a
-                  className={`${interactiveLink} text-xs font-semibold`}
-                  href="#forgot-password"
-                  onClick={(event) => event.preventDefault()}
-                >
-                  Esqueci minha senha
-                </a>
-              </div>
             </div>
 
             <label
@@ -164,20 +147,12 @@ export function LoginPage() {
             </Button>
           </form>
 
-          <div className="relative flex items-center justify-center">
-            <div className="h-px w-full bg-border" />
-            <span className="absolute bg-background px-3 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
-              ou
-            </span>
-          </div>
-
           <Button
             type="button"
             variant="outline"
             className="h-11 w-full border-border hover:border-brand/40"
           >
-            <ShieldCheck className="mr-2 size-4" aria-hidden="true" />
-            Entrar com SSO corporativo
+            Esqueci minha senha
           </Button>
 
           <div className="space-y-8">

@@ -16,8 +16,11 @@ describe('login page', () => {
       screen.getByRole('button', { name: /^Entrar$/ }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('button', { name: 'Entrar com SSO corporativo' }),
+      screen.getByRole('button', { name: 'Esqueci minha senha' }),
     ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Entrar com SSO corporativo' }),
+    ).not.toBeInTheDocument();
   });
 
   it('lets the user reveal and hide the password', () => {
@@ -46,18 +49,14 @@ describe('login page', () => {
     expect(checkbox).toBeChecked();
   });
 
-  it('places password recovery between the password field and remember-me', () => {
+  it('places password recovery after the primary login action', () => {
     render(<LoginPage />);
 
-    const password = screen.getByLabelText('Senha');
-    const forgotPassword = screen.getByRole('link', {
+    const login = screen.getByRole('button', { name: /^Entrar$/ });
+    const forgotPassword = screen.getByRole('button', {
       name: 'Esqueci minha senha',
     });
-    const rememberMe = screen.getByRole('checkbox', {
-      name: 'Manter-me conectado',
-    });
 
-    expect(password).toAppearBefore(forgotPassword);
-    expect(forgotPassword).toAppearBefore(rememberMe);
+    expect(login).toAppearBefore(forgotPassword);
   });
 });
