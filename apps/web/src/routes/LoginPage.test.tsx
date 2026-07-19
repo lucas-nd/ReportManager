@@ -45,4 +45,19 @@ describe('login page', () => {
     fireEvent.click(checkbox);
     expect(checkbox).toBeChecked();
   });
+
+  it('places password recovery between the password field and remember-me', () => {
+    render(<LoginPage />);
+
+    const password = screen.getByLabelText('Senha');
+    const forgotPassword = screen.getByRole('link', {
+      name: 'Esqueci minha senha',
+    });
+    const rememberMe = screen.getByRole('checkbox', {
+      name: 'Manter-me conectado',
+    });
+
+    expect(password).toAppearBefore(forgotPassword);
+    expect(forgotPassword).toAppearBefore(rememberMe);
+  });
 });

@@ -101,21 +101,12 @@ export function LoginPage() {
             </div>
 
             <div className="space-y-2">
-              <div className="flex items-center justify-between gap-4">
-                <label
-                  className="text-xs font-semibold uppercase tracking-wider text-muted-foreground"
-                  htmlFor="password"
-                >
-                  Senha
-                </label>
-                <a
-                  className={`${interactiveLink} text-xs font-semibold`}
-                  href="#forgot-password"
-                  onClick={(event) => event.preventDefault()}
-                >
-                  Esqueci minha senha
-                </a>
-              </div>
+              <label
+                className="text-xs font-semibold uppercase tracking-wider text-muted-foreground"
+                htmlFor="password"
+              >
+                Senha
+              </label>
               <div className="relative">
                 <Lock
                   className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
@@ -139,6 +130,15 @@ export function LoginPage() {
                     <Eye className="size-4" aria-hidden="true" />
                   )}
                 </button>
+              </div>
+              <div className="flex justify-end">
+                <a
+                  className={`${interactiveLink} text-xs font-semibold`}
+                  href="#forgot-password"
+                  onClick={(event) => event.preventDefault()}
+                >
+                  Esqueci minha senha
+                </a>
               </div>
             </div>
 
