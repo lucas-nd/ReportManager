@@ -12,7 +12,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "typecheck": "pnpm -r typecheck",
+    "typecheck": "pnpm --filter @report-manager/shared build && pnpm -r typecheck",
     "test": "pnpm -r test"
   },
   "devDependencies": {
