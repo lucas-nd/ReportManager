@@ -4,11 +4,13 @@ import { describe, expect, it } from 'vitest';
 import { App } from './App.js';
 
 describe('App', () => {
-  it('renders the application shell', () => {
+  it('renders the login page at /login', () => {
+    window.history.pushState({}, '', '/login');
+
     render(<App />);
 
     expect(
-      screen.getByRole('heading', { name: 'Report Manager' }),
+      screen.getByRole('heading', { name: 'Acesse sua conta' }),
     ).toBeInTheDocument();
   });
 });
