@@ -24,3 +24,6 @@ pnpm format:check
 pnpm typecheck
 pnpm test
 ```
+
+Por padrão, o web fica disponível em `http://localhost:5174` e a API em
+`http://localhost:3001`. Use `PORT` para sobrescrever a porta da API.
