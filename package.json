@@ -1,0 +1,26 @@
+{
+  "name": "report-manager",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "pnpm@11.15.0",
+  "engines": {
+    "node": ">=24 <25"
+  },
+  "scripts": {
+    "dev": "pnpm --filter @report-manager/shared build && pnpm -r --parallel dev",
+    "build": "pnpm -r build",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "pnpm --filter @report-manager/shared build && pnpm -r typecheck",
+    "test": "pnpm -r test"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "eslint": "^9.0.0",
+    "globals": "^16.0.0",
+    "prettier": "^3.0.0",
+    "typescript": "6.0.3",
+    "typescript-eslint": "^8.0.0"
+  }
+}
