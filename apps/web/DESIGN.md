@@ -7,6 +7,7 @@ Design language for the field service reporting platform. Mobile-first, focused 
 **Precision utility.** Slate + electric blue. Functional, dense but breathable, engineered feel — inspired by industrial tooling and modern SaaS operations dashboards (Linear, Vercel, Retool). No decorative gradients, no purple/indigo defaults, no generic AI aesthetics.
 
 Principles:
+
 - **Legibility over decoration.** Contrast, whitespace and monospaced metadata do the heavy lifting.
 - **Mobile-first.** Every layout scales up from ~390px. Bottom nav on mobile, no bottom nav on desktop.
 - **Minimal chrome.** Cards, thin borders, subtle surfaces — no heavy shadows, no glass, no neumorphism.
@@ -17,43 +18,48 @@ Principles:
 Defined in `src/styles.css` (OKLCH) and exposed to Tailwind via `@theme inline`. Light theme is canonical; dark theme mirrors it.
 
 ### Core surfaces
-| Token | Light | Purpose |
-|---|---|---|
-| `--background` | oklch(0.985 0.003 250) | App background |
-| `--surface` | oklch(1 0 0) | Elevated surface |
+
+| Token             | Light                  | Purpose                       |
+| ----------------- | ---------------------- | ----------------------------- |
+| `--background`    | oklch(0.985 0.003 250) | App background                |
+| `--surface`       | oklch(1 0 0)           | Elevated surface              |
 | `--surface-muted` | oklch(0.965 0.008 250) | Inset chips, secondary blocks |
-| `--card` | oklch(1 0 0) | Card container |
-| `--border` | oklch(0.92 0.01 255) | Hairline borders |
+| `--card`          | oklch(1 0 0)           | Card container                |
+| `--border`        | oklch(0.92 0.01 255)   | Hairline borders              |
 
 ### Foreground
-| Token | Light | Purpose |
-|---|---|---|
-| `--foreground` | oklch(0.18 0.03 260) | Primary text |
-| `--muted-foreground` | oklch(0.5 0.02 258) | Secondary text, captions |
+
+| Token                | Light                | Purpose                  |
+| -------------------- | -------------------- | ------------------------ |
+| `--foreground`       | oklch(0.18 0.03 260) | Primary text             |
+| `--muted-foreground` | oklch(0.5 0.02 258)  | Secondary text, captions |
 
 ### Brand & primary
-| Token | Value | Purpose |
-|---|---|---|
-| `--primary` | oklch(0.22 0.04 265) — slate-900 | Primary buttons, high-contrast blocks |
-| `--brand` | oklch(0.58 0.19 262) — electric blue (~#2563EB) | Links, active state, KPIs of interest, focus ring |
+
+| Token       | Value                                           | Purpose                                           |
+| ----------- | ----------------------------------------------- | ------------------------------------------------- |
+| `--primary` | oklch(0.22 0.04 265) — slate-900                | Primary buttons, high-contrast blocks             |
+| `--brand`   | oklch(0.58 0.19 262) — electric blue (~#2563EB) | Links, active state, KPIs of interest, focus ring |
 
 ### Status
-| Token | Value | Usage |
-|---|---|---|
-| `--success` | oklch(0.68 0.15 160) | Approved, completed |
-| `--warning` | oklch(0.78 0.15 75) | Adjustments requested, waiting |
-| `--danger` / `--destructive` | oklch(0.62 0.22 25) | Rejected, destructive actions |
+
+| Token                        | Value                | Usage                          |
+| ---------------------------- | -------------------- | ------------------------------ |
+| `--success`                  | oklch(0.68 0.15 160) | Approved, completed            |
+| `--warning`                  | oklch(0.78 0.15 75)  | Adjustments requested, waiting |
+| `--danger` / `--destructive` | oklch(0.62 0.22 25)  | Rejected, destructive actions  |
 
 Rule: any new color must be added as a semantic token first, then referenced by name. No inline hex, no `bg-blue-500` utilities.
 
 ## 3. Typography
 
-Loaded via `<link>` tag in `src/routes/__root.tsx` (never `@import` remote URLs from `styles.css`).
+Bundled locally through `@fontsource-variable` imports in `src/main.tsx` (never load remote font URLs from `styles.css`).
 
 - **Sans (body & UI):** Inter — `--font-sans`
 - **Mono (codes, metrics, metadata, timestamps):** JetBrains Mono — `--font-mono`
 
 Scale (Tailwind defaults):
+
 - Page title: `text-2xl font-bold tracking-tight` (mobile) → `text-3xl` (desktop KPIs)
 - Section heading: `text-xs font-bold uppercase tracking-widest text-muted-foreground`
 - Body: `text-sm`
@@ -81,6 +87,7 @@ Never use serif. Never Poppins/Nunito/Roboto.
 Base: shadcn/ui (Radix + Tailwind). Custom components live in `src/components/`.
 
 Key custom components:
+
 - `AppHeader` — title, subtitle, current-user chip.
 - `BottomNav` — role-aware tabs; hidden on `md+`.
 - `StatusBadge` — semantic pill for `OSStatus` (pendente / em_andamento / aguardando_aprovacao / ajustes_solicitados / aprovado / reprovado / concluida). Colors mapped to `success` / `warning` / `danger` / `brand` / neutral.
@@ -89,6 +96,7 @@ Key custom components:
 - `AddActivityDialog` — timeline entry composer (category + description + photos).
 
 Buttons:
+
 - Primary: `bg-primary text-primary-foreground`, `rounded-xl`, `font-semibold`.
 - Brand CTA: `bg-brand text-brand-foreground` (used sparingly — approvals, PDF export).
 - Ghost: `hover:bg-surface-muted`.
@@ -111,6 +119,7 @@ Restrained. `transition-colors`, `transition-transform` on hover; `duration` def
 ## 10. Role-driven variation
 
 Same design system, different information density:
+
 - **Técnico:** single-column, big touch targets, "Continuar atendimento" hero card.
 - **Supervisor:** approval queue — list-first, review actions inline.
 - **Admin:** dashboard — KPI grid, bar chart, top-clients list, brand-primary summary card.
