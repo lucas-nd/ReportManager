@@ -1,11 +1,23 @@
 import { fireEvent, render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, it } from 'vitest';
 
+import { SessionProvider } from '../auth/SessionContext.js';
 import { LoginPage } from './LoginPage.js';
+
+function renderLoginPage() {
+  return render(
+    <MemoryRouter>
+      <SessionProvider user={null}>
+        <LoginPage />
+      </SessionProvider>
+    </MemoryRouter>,
+  );
+}
 
 describe('login page', () => {
   it('renders the account access form', () => {
-    render(<LoginPage />);
+    renderLoginPage();
 
     expect(
       screen.getByRole('heading', { name: 'Acesse sua conta' }),
@@ -21,10 +33,16 @@ describe('login page', () => {
     expect(
       screen.queryByRole('button', { name: 'Entrar com SSO corporativo' }),
     ).not.toBeInTheDocument();
+    expect(
+      screen.queryByText(/admin@fieldflow\.local/i),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByText(/tecnico@fieldflow\.local/i),
+    ).not.toBeInTheDocument();
   });
 
   it('lets the user reveal and hide the password', () => {
-    render(<LoginPage />);
+    renderLoginPage();
 
     const password = screen.getByLabelText('Senha');
     const toggle = screen.getByRole('button', { name: 'Mostrar senha' });
@@ -38,7 +56,7 @@ describe('login page', () => {
   });
 
   it('keeps the remember-me checkbox controlled locally', () => {
-    render(<LoginPage />);
+    renderLoginPage();
 
     const checkbox = screen.getByRole('checkbox', {
       name: 'Manter-me conectado',
@@ -50,7 +68,7 @@ describe('login page', () => {
   });
 
   it('places password recovery after the primary login action', () => {
-    render(<LoginPage />);
+    renderLoginPage();
 
     const login = screen.getByRole('button', { name: /^Entrar$/ });
     const forgotPassword = screen.getByRole('button', {
