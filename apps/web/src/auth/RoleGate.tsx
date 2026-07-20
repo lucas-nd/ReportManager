@@ -9,7 +9,7 @@ type RoleGateProps = {
 };
 
 export function RoleGate({ allow, children }: RoleGateProps) {
-  const user = useSession();
+  const { user } = useSession();
 
   if (!user || !allow.includes(user.role)) {
     return null;

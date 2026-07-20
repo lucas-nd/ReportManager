@@ -2,12 +2,15 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, it } from 'vitest';
 
+import { SessionProvider } from '../auth/SessionContext.js';
 import { LoginPage } from './LoginPage.js';
 
 function renderLoginPage() {
   return render(
     <MemoryRouter>
-      <LoginPage />
+      <SessionProvider user={null}>
+        <LoginPage />
+      </SessionProvider>
     </MemoryRouter>,
   );
 }
@@ -29,6 +32,12 @@ describe('login page', () => {
     ).toBeInTheDocument();
     expect(
       screen.queryByRole('button', { name: 'Entrar com SSO corporativo' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByText(/admin@fieldflow\.local/i),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByText(/tecnico@fieldflow\.local/i),
     ).not.toBeInTheDocument();
   });
 

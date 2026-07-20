@@ -1,9 +1,14 @@
 import type { AuthenticatedUser } from '@report-manager/shared';
-import { createContext, useContext, type ReactNode } from 'react';
+import { createContext, useContext, useState, type ReactNode } from 'react';
 
-const SessionContext = createContext<AuthenticatedUser | null | undefined>(
-  undefined,
-);
+import { authenticateWithMock } from './mockAuthentication.js';
+
+type Session = {
+  signIn: (email: string, password: string) => boolean;
+  user: AuthenticatedUser | null;
+};
+
+const SessionContext = createContext<Session | undefined>(undefined);
 
 type SessionProviderProps = {
   children: ReactNode;
@@ -11,17 +16,32 @@ type SessionProviderProps = {
 };
 
 export function SessionProvider({ children, user }: SessionProviderProps) {
+  const [currentUser, setCurrentUser] = useState(user);
+
+  function signIn(email: string, password: string) {
+    const authenticatedUser = authenticateWithMock(email, password);
+
+    if (!authenticatedUser) {
+      return false;
+    }
+
+    setCurrentUser(authenticatedUser);
+    return true;
+  }
+
   return (
-    <SessionContext.Provider value={user}>{children}</SessionContext.Provider>
+    <SessionContext.Provider value={{ signIn, user: currentUser }}>
+      {children}
+    </SessionContext.Provider>
   );
 }
 
 export function useSession() {
-  const user = useContext(SessionContext);
+  const session = useContext(SessionContext);
 
-  if (user === undefined) {
+  if (session === undefined) {
     throw new Error('useSession must be used within a SessionProvider');
   }
 
-  return user;
+  return session;
 }

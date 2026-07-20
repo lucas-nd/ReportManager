@@ -11,7 +11,7 @@ type RouteAccessGuardProps = {
 };
 
 export function RouteAccessGuard({ access, children }: RouteAccessGuardProps) {
-  const user = useSession();
+  const { user } = useSession();
 
   switch (access.type) {
     case 'public':

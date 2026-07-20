@@ -5,17 +5,23 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/button.js';
 import { Checkbox } from '../components/ui/checkbox.js';
 import { Input } from '../components/ui/input.js';
+import { useSession } from '../auth/SessionContext.js';
 
 const interactiveLink =
   'inline-flex min-h-11 items-center rounded-sm text-brand outline-none hover:underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background';
 
 export function LoginPage() {
   const navigate = useNavigate();
+  const { signIn } = useSession();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [authenticationError, setAuthenticationError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setAuthenticationError(!signIn(email, password));
   }
 
   return (
@@ -90,6 +96,10 @@ export function LoginPage() {
                   type="email"
                   placeholder="voce@empresa.com"
                   className="pl-10"
+                  autoComplete="email"
+                  required
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
                 />
               </div>
             </div>
@@ -111,6 +121,14 @@ export function LoginPage() {
                   type={showPassword ? 'text' : 'password'}
                   placeholder="••••••••"
                   className="px-10"
+                  aria-invalid={authenticationError}
+                  aria-describedby={
+                    authenticationError ? 'authentication-error' : undefined
+                  }
+                  autoComplete="current-password"
+                  required
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
                 />
                 <button
                   type="button"
@@ -139,6 +157,16 @@ export function LoginPage() {
               />
               Manter-me conectado
             </label>
+
+            {authenticationError && (
+              <p
+                id="authentication-error"
+                className="text-sm text-danger"
+                role="alert"
+              >
+                E-mail ou senha inválidos.
+              </p>
+            )}
 
             <Button
               type="submit"

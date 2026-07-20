@@ -14,7 +14,7 @@ import {
 import { LoginPage } from './routes/LoginPage.js';
 
 function HomeRedirect() {
-  const user = useSession();
+  const { user } = useSession();
 
   if (!user) {
     return <Navigate replace to="/login" />;
