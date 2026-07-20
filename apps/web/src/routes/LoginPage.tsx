@@ -1,5 +1,6 @@
 import { ArrowRight, Eye, EyeOff, Hammer, Lock, Mail } from 'lucide-react';
 import { useState, type FormEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { Button } from '../components/ui/button.js';
 import { Checkbox } from '../components/ui/checkbox.js';
@@ -9,6 +10,7 @@ const interactiveLink =
   'inline-flex min-h-11 items-center rounded-sm text-brand outline-none hover:underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background';
 
 export function LoginPage() {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
 
@@ -31,7 +33,7 @@ export function LoginPage() {
             Plataforma de serviços em campo
           </p>
           <h2 className="mt-5 text-4xl font-bold leading-tight tracking-tight">
-            Do check-in do técnico à aprovação do supervisor, tudo em um único
+            Do check-in do técnico à gestão administrativa, tudo em um único
             fluxo.
           </h2>
           <p className="mt-6 max-w-md text-sm leading-6 text-primary-foreground/60">
@@ -151,6 +153,7 @@ export function LoginPage() {
             type="button"
             variant="outline"
             className="h-11 w-full border-border hover:border-brand/40"
+            onClick={() => navigate('/forgot-password')}
           >
             Esqueci minha senha
           </Button>
