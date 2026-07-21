@@ -170,7 +170,14 @@ describe('technician experience', () => {
 
     render(<App currentUser={technician} />);
 
-    expect(screen.getByRole('status')).toHaveTextContent('Online');
+    const onlineStatus = screen.getByRole('status');
+
+    expect(onlineStatus).toHaveTextContent('Online');
+    expect(onlineStatus.closest('header')).toHaveClass('@container/header');
+    expect(within(onlineStatus).getByText('Online')).toHaveClass(
+      'sr-only',
+      '@min-[34rem]/header:not-sr-only',
+    );
 
     fireEvent(window, new Event('offline'));
 
