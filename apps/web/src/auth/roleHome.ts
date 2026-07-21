@@ -2,7 +2,7 @@ import type { UserRole } from '@report-manager/shared';
 
 const homePathByRole: Record<UserRole, string> = {
   administrator: '/admin',
-  technician: '/services',
+  technician: '/dashboard',
 };
 
 export function getRoleHomePath(role: UserRole) {

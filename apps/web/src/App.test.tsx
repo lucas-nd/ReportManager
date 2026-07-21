@@ -32,7 +32,7 @@ describe('App', () => {
     ).toBeInTheDocument();
   });
 
-  it('signs a technician in with the mock authentication adapter', () => {
+  it('signs a technician in and opens the dashboard', () => {
     window.history.pushState({}, '', '/login');
 
     render(<App />);
@@ -46,7 +46,7 @@ describe('App', () => {
     fireEvent.click(screen.getByRole('button', { name: /^Entrar$/ }));
 
     expect(
-      screen.getByRole('heading', { name: 'Serviços atribuídos' }),
+      screen.getByRole('heading', { name: 'Visão geral' }),
     ).toBeInTheDocument();
   });
 
@@ -56,7 +56,7 @@ describe('App', () => {
     render(<App />);
 
     fireEvent.change(screen.getByLabelText('E-mail'), {
-      target: { value: 'unknown@fieldflow.local' },
+      target: { value: 'unknown@reportmanager.local' },
     });
     fireEvent.change(screen.getByLabelText('Senha'), {
       target: { value: 'incorrect' },
