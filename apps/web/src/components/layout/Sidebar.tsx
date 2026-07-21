@@ -1,29 +1,31 @@
 import * as Dialog from '@radix-ui/react-dialog';
-import { ChevronsLeft, ClipboardCheck, LogOut, Menu, X } from 'lucide-react';
+import { ClipboardCheck, LogOut, Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 import { useSession } from '../../auth/SessionContext.js';
-import {
-  technicianCopy,
-  technicianNavigation,
-  technicianProfile,
-  type TechnicianNavigationItem,
-} from '../../technician/technicianContent.js';
-import { cn } from '../../lib/utils.js';
 
-function Brand({ compact = false }: { compact?: boolean }) {
+import { cn } from '../../lib/utils.js';
+import type { LayoutContent, NavigationItem } from './layoutContent.js';
+
+function Brand({
+  compact = false,
+  subtitle,
+}: {
+  compact?: boolean;
+  subtitle: string;
+}) {
   return (
     <div className="flex min-w-0 items-center gap-3">
       <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-brand text-brand-foreground">
         <ClipboardCheck className="size-5" aria-hidden="true" />
       </div>
-      <div className={cn('min-w-0', compact && 'hidden lg:block')}>
+      <div className={cn('min-w-0', compact && 'hidden')}>
         <p className="truncate text-sm font-bold tracking-tight">
           Report Manager
         </p>
         <p className="mt-0.5 truncate font-mono text-[9px] uppercase tracking-[0.16em] text-muted-foreground">
-          {technicianCopy.brand.subtitle}
+          {subtitle}
         </p>
       </div>
     </div>
@@ -44,7 +46,7 @@ export function SidebarItem({
   onNavigate,
 }: {
   compact?: boolean;
-  item: TechnicianNavigationItem;
+  item: NavigationItem;
   onNavigate?: () => void;
 }) {
   const Icon = item.icon;
@@ -63,11 +65,9 @@ export function SidebarItem({
       onClick={onNavigate}
     >
       <Icon className="size-4 shrink-0" aria-hidden="true" />
-      <span className={cn('truncate', compact && 'hidden lg:inline')}>
-        {item.label}
-      </span>
+      <span className={cn('truncate', compact && 'hidden')}>{item.label}</span>
       {item.pendingCount ? (
-        <span className={cn(compact && 'hidden lg:inline')}>
+        <span className={cn(compact && 'hidden')}>
           <PendingSyncBadge count={item.pendingCount} />
         </span>
       ) : null}
@@ -75,7 +75,7 @@ export function SidebarItem({
   );
 }
 
-export function UserProfile({
+function SignOutButton({
   compact,
   onSignOut,
 }: {
@@ -84,30 +84,17 @@ export function UserProfile({
 }) {
   return (
     <div className="border-t border-border pt-4">
-      <div className="flex items-center gap-3 px-2">
-        <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-surface-muted font-mono text-xs font-bold text-foreground">
-          {technicianProfile.initials}
-        </div>
-        <div className={cn('min-w-0 flex-1', compact && 'hidden lg:block')}>
-          <p className="truncate text-sm font-semibold">
-            {technicianProfile.name}
-          </p>
-          <p className="truncate text-xs text-muted-foreground">
-            {technicianProfile.role}
-          </p>
-        </div>
-      </div>
       <button
         type="button"
         className={cn(
           'mt-3 flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground outline-none transition-colors hover:bg-danger/10 hover:text-danger focus-visible:ring-2 focus-visible:ring-ring',
-          compact && 'md:justify-center lg:justify-start',
+          compact && 'md:justify-center',
         )}
         aria-label="Sair"
         onClick={onSignOut}
       >
         <LogOut className="size-4 shrink-0" aria-hidden="true" />
-        <span className={cn(compact && 'hidden lg:inline')}>Sair</span>
+        <span className={cn(compact && 'hidden')}>Sair</span>
       </button>
     </div>
   );
@@ -115,9 +102,11 @@ export function UserProfile({
 
 function SidebarContent({
   compact,
+  content,
   onNavigate,
 }: {
   compact?: boolean;
+  content: LayoutContent;
   onNavigate?: () => void;
 }) {
   const navigate = useNavigate();
@@ -131,12 +120,12 @@ function SidebarContent({
 
   return (
     <div className="flex h-full flex-col">
-      <Brand compact={compact} />
+      <Brand compact={compact} subtitle={content.brandSubtitle} />
       <nav
         className="mt-8 flex flex-1 flex-col gap-1"
         aria-label="Navegação principal"
       >
-        {technicianNavigation.map((item) => (
+        {content.navigation.map((item) => (
           <SidebarItem
             compact={compact}
             item={item}
@@ -145,47 +134,31 @@ function SidebarContent({
           />
         ))}
       </nav>
-      <UserProfile compact={compact} onSignOut={handleSignOut} />
+      <SignOutButton compact={compact} onSignOut={handleSignOut} />
     </div>
   );
 }
 
 export function DesktopSidebar({
   collapsed,
-  onToggle,
+  content,
 }: {
   collapsed: boolean;
-  onToggle: () => void;
+  content: LayoutContent;
 }) {
   return (
     <aside
       className={cn(
         'sticky top-0 hidden h-svh shrink-0 border-r border-border bg-surface p-4 transition-[width] md:block',
-        collapsed ? 'w-20 lg:w-72' : 'w-72',
+        collapsed ? 'w-20' : 'w-72',
       )}
     >
-      <SidebarContent compact={collapsed} />
-      <button
-        type="button"
-        className="absolute right-3 top-4 hidden size-10 items-center justify-center rounded-xl text-muted-foreground outline-none hover:bg-surface-muted focus-visible:ring-2 focus-visible:ring-ring md:flex lg:hidden"
-        aria-label={
-          collapsed ? 'Expandir menu lateral' : 'Recolher menu lateral'
-        }
-        onClick={onToggle}
-      >
-        <ChevronsLeft
-          className={cn(
-            'size-4 transition-transform',
-            collapsed && 'rotate-180',
-          )}
-          aria-hidden="true"
-        />
-      </button>
+      <SidebarContent compact={collapsed} content={content} />
     </aside>
   );
 }
 
-export function MobileSidebar() {
+export function MobileSidebar({ content }: { content: LayoutContent }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -215,7 +188,7 @@ export function MobileSidebar() {
               <X className="size-5" aria-hidden="true" />
             </button>
           </Dialog.Close>
-          <SidebarContent onNavigate={() => setOpen(false)} />
+          <SidebarContent content={content} onNavigate={() => setOpen(false)} />
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

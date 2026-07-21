@@ -32,6 +32,14 @@ function HomeRedirect() {
   return <Navigate replace to={getRoleHomePath(user.role)} />;
 }
 
+function AdminLayoutRoute() {
+  return (
+    <RouteAccessGuard access={{ type: 'roles', roles: ['administrator'] }}>
+      <AppLayout />
+    </RouteAccessGuard>
+  );
+}
+
 function TechnicianLayoutRoute() {
   return (
     <RouteAccessGuard access={{ type: 'roles', roles: ['technician'] }}>
@@ -83,16 +91,9 @@ export function App({ currentUser = null }: AppProps) {
                 </RouteAccessGuard>
               }
             />
-            <Route
-              path="/admin"
-              element={
-                <RouteAccessGuard
-                  access={{ type: 'roles', roles: ['administrator'] }}
-                >
-                  <AdminHomePage />
-                </RouteAccessGuard>
-              }
-            />
+            <Route element={<AdminLayoutRoute />}>
+              <Route path="/admin" element={<AdminHomePage />} />
+            </Route>
             <Route element={<TechnicianLayoutRoute />}>
               <Route path="/dashboard" element={<TechnicianDashboardPage />} />
               <Route path="/services" element={<ServicesPage />} />

@@ -81,6 +81,21 @@ describe('App', () => {
     ).toBeInTheDocument();
   });
 
+  it('renders the shared header and menu in the administrator context', () => {
+    window.history.pushState({}, '', '/admin');
+
+    render(<App currentUser={{ id: 'admin-1', role: 'administrator' }} />);
+
+    expect(screen.getByText('Área administrativa')).toBeInTheDocument();
+    expect(
+      screen.getByRole('navigation', { name: 'Navegação principal' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Recolher menu lateral' }),
+    ).toBeInTheDocument();
+    expect(screen.getAllByText('Administrador')).toHaveLength(2);
+  });
+
   it('redirects a guest from an administrator route to login', () => {
     window.history.pushState({}, '', '/admin');
 

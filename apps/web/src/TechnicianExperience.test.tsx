@@ -100,6 +100,51 @@ describe('technician experience', () => {
     ).toBeInTheDocument();
   });
 
+  it('keeps the sidebar control beside the technician area at every width', () => {
+    window.history.pushState({}, '', '/dashboard');
+
+    render(<App currentUser={technician} />);
+
+    const areaLabel = screen.getByText('Área do técnico');
+    const collapseButton = screen.getByRole('button', {
+      name: 'Recolher menu lateral',
+    });
+    const mobileMenuButton = screen.getByRole('button', {
+      name: 'Abrir menu',
+    });
+
+    const titleBlock = areaLabel.parentElement;
+    const headerStart = titleBlock?.parentElement;
+
+    expect(titleBlock).toContainElement(
+      screen.getByRole('heading', { name: 'Visão geral' }),
+    );
+    expect(headerStart).toContainElement(collapseButton);
+    expect(headerStart).toContainElement(mobileMenuButton);
+    expect(headerStart?.children[0]).toBe(mobileMenuButton);
+    expect(headerStart?.children[1]).toBe(collapseButton);
+    expect(headerStart?.children[2]).toBe(titleBlock);
+
+    fireEvent.click(collapseButton);
+
+    expect(
+      screen.getByRole('button', { name: 'Expandir menu lateral' }),
+    ).toBeInTheDocument();
+  });
+
+  it('places the signed-in technician information after the theme button', () => {
+    window.history.pushState({}, '', '/dashboard');
+
+    render(<App currentUser={technician} />);
+
+    const themeButton = screen.getByRole('button', {
+      name: 'Ativar modo escuro',
+    });
+    const profileName = screen.getByText('Lucas Diniz');
+
+    expect(themeButton.nextElementSibling).toContainElement(profileName);
+  });
+
   it('opens and closes the accessible mobile navigation drawer', async () => {
     window.history.pushState({}, '', '/dashboard');
 
