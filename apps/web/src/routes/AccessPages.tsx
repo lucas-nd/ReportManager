@@ -45,10 +45,13 @@ export function ForbiddenPage() {
 
 export function AdminHomePage() {
   return (
-    <AccessPage
-      title="Painel administrativo"
-      description="Gerencie usuários, cadastros e ordens de serviço."
-    />
+    <section className="mx-auto w-full max-w-7xl p-4 sm:p-6 md:p-8">
+      <div className="rounded-2xl border border-border bg-card p-6">
+        <p className="text-sm leading-6 text-muted-foreground">
+          Gerencie usuários, cadastros e ordens de serviço.
+        </p>
+      </div>
+    </section>
   );
 }
 

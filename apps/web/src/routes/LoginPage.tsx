@@ -31,7 +31,9 @@ export function LoginPage() {
           <div className="flex size-10 items-center justify-center rounded-xl bg-primary-foreground/10 font-mono text-sm font-bold">
             FF
           </div>
-          <span className="text-lg font-bold tracking-tight">FieldFlow</span>
+          <span className="text-lg font-bold tracking-tight">
+            Report Manager
+          </span>
         </div>
 
         <div className="max-w-xl">
@@ -61,7 +63,7 @@ export function LoginPage() {
             </div>
             <div>
               <p className="text-lg font-bold leading-tight tracking-tight">
-                FieldFlow
+                Report Manager
               </p>
               <p className="mt-0.5 text-xs text-muted-foreground">
                 Entrar na plataforma

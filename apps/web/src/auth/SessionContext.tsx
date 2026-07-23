@@ -5,6 +5,7 @@ import { authenticateWithMock } from './mockAuthentication.js';
 
 type Session = {
   signIn: (email: string, password: string) => boolean;
+  signOut: () => void;
   user: AuthenticatedUser | null;
 };
 
@@ -29,8 +30,12 @@ export function SessionProvider({ children, user }: SessionProviderProps) {
     return true;
   }
 
+  function signOut() {
+    setCurrentUser(null);
+  }
+
   return (
-    <SessionContext.Provider value={{ signIn, user: currentUser }}>
+    <SessionContext.Provider value={{ signIn, signOut, user: currentUser }}>
       {children}
     </SessionContext.Provider>
   );

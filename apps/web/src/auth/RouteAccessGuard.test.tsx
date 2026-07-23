@@ -13,7 +13,7 @@ function renderRoute(access: RouteAccess, user: AuthenticatedUser | null) {
         <Routes>
           <Route path="/login" element={<p>Login</p>} />
           <Route path="/admin" element={<p>Início administrador</p>} />
-          <Route path="/services" element={<p>Início técnico</p>} />
+          <Route path="/dashboard" element={<p>Início técnico</p>} />
           <Route path="/forbidden" element={<p>Acesso negado</p>} />
           <Route
             path="/requested"
@@ -51,7 +51,7 @@ describe('RouteAccessGuard', () => {
     expect(screen.getByText('Início administrador')).toBeInTheDocument();
   });
 
-  it('redirects a technician away from guest-only routes to services', () => {
+  it('redirects a technician away from guest-only routes to dashboard', () => {
     renderRoute({ type: 'guest-only' }, { id: 'tech-1', role: 'technician' });
 
     expect(screen.getByText('Início técnico')).toBeInTheDocument();

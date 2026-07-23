@@ -34,10 +34,10 @@ describe('login page', () => {
       screen.queryByRole('button', { name: 'Entrar com SSO corporativo' }),
     ).not.toBeInTheDocument();
     expect(
-      screen.queryByText(/admin@fieldflow\.local/i),
+      screen.queryByText(/admin@reportmanager\.local/i),
     ).not.toBeInTheDocument();
     expect(
-      screen.queryByText(/tecnico@fieldflow\.local/i),
+      screen.queryByText(/tecnico@reportmanager\.local/i),
     ).not.toBeInTheDocument();
   });
 
