@@ -27,3 +27,14 @@ pnpm test
 
 Por padrão, o web fica disponível em `http://localhost:5174` e a API em
 `http://localhost:3001`. Use `PORT` para sobrescrever a porta da API.
+
+## Autenticação
+
+A autenticação atual é uma implementação de demonstração e persiste apenas os
+dados do usuário no `localStorage`. Quando a autenticação real for integrada,
+provavelmente com Supabase, a estratégia de sessão deve ser reavaliada antes de
+armazenar tokens no navegador. A preferência deve ser por cookies seguros,
+quando compatíveis com a arquitetura adotada, em vez de `localStorage`.
+
+Consulte a consideração arquitetural em `IDEA.md` antes de implementar esse
+fluxo.

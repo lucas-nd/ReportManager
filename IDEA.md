@@ -197,6 +197,18 @@ O relatório pode conter:
 - Dados de campo devem ter rastreabilidade;
 - O sistema deve diferenciar perfis e permissões.
 
+### Autenticação e persistência da sessão
+
+A persistência atual em `localStorage` pertence somente à autenticação simulada
+do MVP e não deve definir automaticamente a arquitetura de produção.
+
+Quando a autenticação real for implementada, provavelmente com Supabase, deve-se
+avaliar o armazenamento da sessão em cookies seguros no lugar de
+`localStorage`. A decisão deve considerar cookies `HttpOnly`, `Secure` e
+`SameSite`, renovação e revogação da sessão, proteção contra CSRF e a integração
+entre o cliente web e a API. Tokens de autenticação não devem ser movidos para
+`localStorage` sem uma análise explícita dos riscos e das necessidades do fluxo.
+
 ## 8. MVP recomendado
 
 ### Administração
