@@ -183,7 +183,7 @@ describe('technician experience', () => {
 
     expect(screen.getByRole('status')).toHaveTextContent('Offline');
     expect(screen.getByRole('alert')).toHaveTextContent(
-      'Alterações ficarão neste dispositivo',
+      'Este atendimento só será mantido enquanto esta página permanecer aberta',
     );
   });
 

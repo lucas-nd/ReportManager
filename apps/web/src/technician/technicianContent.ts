@@ -88,7 +88,7 @@ export const technicianCopy = {
   header: {
     areaLabel: 'Área do técnico',
     offlineNotice:
-      'Você está offline. Alterações ficarão neste dispositivo até a próxima sincronização.',
+      'Você está offline. Este atendimento só será mantido enquanto esta página permanecer aberta.',
   },
   dashboard: {
     dateEyebrow: 'Segunda-feira · 20 jul.',

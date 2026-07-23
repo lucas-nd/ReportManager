@@ -258,3 +258,9 @@ entre o cliente web e a API. Tokens de autenticação não devem ser movidos par
 - Qual prazo?
 - Qual preço?
 - Qual forma de pagamento?
+
+## Atendimento e workflows declarativos
+
+Cada Ordem de Serviço possui um Atendimento operacional único, que pode ser pausado e retomado. O Atendimento contém Etapas repetíveis; apenas uma Etapa pode estar ativa ou pausada por vez, e todas devem estar concluídas antes do fechamento. Etapas registram equipamentos, horários ajustáveis enquanto abertas, resumo, medições, peças, fotos e observações.
+
+O fluxo é definido por templates JSON versionados e imutáveis, com estados, telas, campos, condições e transições. Instâncias sempre apontam para uma versão exata. Nesta primeira entrega há um único template embutido e dados somente em memória. Configuração visual, publicação, persistência, sincronização e migração entre versões são evoluções futuras.

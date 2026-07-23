@@ -10,6 +10,7 @@ import {
   Wrench,
 } from 'lucide-react';
 import type { ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 
 import { DashboardCard } from '../components/dashboard/DashboardCard.js';
 import { NextServiceCard } from '../components/dashboard/NextServiceCard.js';
@@ -98,11 +99,27 @@ export function PlaceholderPage({
 
 export function ServicesPage() {
   return (
-    <PlaceholderPage
-      description={technicianCopy.pages.services}
-      icon={Wrench}
-      title="Serviços"
-    />
+    <PageContainer>
+      <section>
+        <h2 className="text-2xl font-bold">Serviços atribuídos</h2>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Dados de demonstração restaurados a cada recarregamento.
+        </p>
+        <article className="mt-6 rounded-2xl border border-border bg-card p-6">
+          <p className="font-mono text-xs text-brand">OS-2026-0142</p>
+          <h3 className="mt-2 text-lg font-bold">FrioSul Alimentos</h3>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Av. das Indústrias, 1840 · Distrito Industrial
+          </p>
+          <Link
+            className="mt-5 inline-flex rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-brand-foreground"
+            to="/services/OS-2026-0142/attendance"
+          >
+            Iniciar atendimento
+          </Link>
+        </article>
+      </section>
+    </PageContainer>
   );
 }
 
