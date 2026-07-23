@@ -52,7 +52,7 @@ type AppProps = {
   currentUser?: AuthenticatedUser | null;
 };
 
-export function App({ currentUser = null }: AppProps) {
+export function App({ currentUser }: AppProps) {
   return (
     <ThemeProvider>
       <SessionProvider user={currentUser}>

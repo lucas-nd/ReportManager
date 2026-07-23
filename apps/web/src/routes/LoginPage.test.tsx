@@ -55,16 +55,12 @@ describe('login page', () => {
     expect(password).toHaveAttribute('type', 'password');
   });
 
-  it('keeps the remember-me checkbox controlled locally', () => {
+  it('does not offer a temporary session option', () => {
     renderLoginPage();
 
-    const checkbox = screen.getByRole('checkbox', {
-      name: 'Manter-me conectado',
-    });
-
-    expect(checkbox).not.toBeChecked();
-    fireEvent.click(checkbox);
-    expect(checkbox).toBeChecked();
+    expect(
+      screen.queryByRole('checkbox', { name: 'Manter-me conectado' }),
+    ).not.toBeInTheDocument();
   });
 
   it('places password recovery after the primary login action', () => {
