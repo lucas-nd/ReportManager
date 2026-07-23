@@ -120,6 +120,7 @@ export function AttendancePage() {
     setScreen('hub');
   }
   function editStep(step: Step) {
+    if (step.status === 'completed') return;
     setDraft(step);
     setEditingId(step.id);
     setErrors([]);
