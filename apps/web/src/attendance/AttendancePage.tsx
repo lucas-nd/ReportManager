@@ -37,6 +37,12 @@ type Step = {
 const order = {
   id: 'OS-2026-0142',
   customer: 'FrioSul Alimentos',
+  company: {
+    legalName: 'FrioSul Alimentos S.A.',
+    tradeName: 'FrioSul Alimentos',
+    taxId: '12.345.678/0001-90',
+    address: 'Av. das Indústrias, 1840 · Distrito Industrial',
+  },
   address: 'Av. das Indústrias, 1840 · Distrito Industrial',
   equipment: ['Chiller Carrier 30XW', 'Bomba Grundfos NB 50-200'],
   request: 'Baixa eficiência térmica e ruído anormal no circuito secundário.',
@@ -69,6 +75,7 @@ export function AttendancePage() {
     'checking' | 'hub' | 'step' | 'pause' | 'closing' | 'completed'
   >('checking');
   const [attendancePaused, setAttendancePaused] = useState(false);
+  const [company, setCompany] = useState(order.company);
   const [steps, setSteps] = useState<Step[]>([]);
   const [editingId, setEditingId] = useState<string>();
   const [draft, setDraft] = useState<Step>(emptyStep);
@@ -197,15 +204,75 @@ export function AttendancePage() {
               Confira os dados antes de iniciar. As informações deste
               atendimento existem apenas nesta sessão.
             </p>
+            <div className="mt-6 rounded-xl border border-border bg-surface-muted/50 p-4 sm:p-5">
+              <div className="flex flex-wrap items-baseline justify-between gap-2">
+                <h3 className="font-semibold">Dados da empresa</h3>
+                <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                  Confira ou complete o cadastro
+                </span>
+              </div>
+              <div className="mt-4 grid gap-4 sm:grid-cols-2">
+                <label className={label}>
+                  Razão social
+                  <input
+                    aria-label="Razão social"
+                    className={field}
+                    value={company.legalName}
+                    onChange={(event) =>
+                      setCompany((current) => ({
+                        ...current,
+                        legalName: event.target.value,
+                      }))
+                    }
+                  />
+                </label>
+                <label className={label}>
+                  Nome fantasia
+                  <input
+                    aria-label="Nome fantasia"
+                    className={field}
+                    value={company.tradeName}
+                    onChange={(event) =>
+                      setCompany((current) => ({
+                        ...current,
+                        tradeName: event.target.value,
+                      }))
+                    }
+                  />
+                </label>
+                <label className={label}>
+                  CNPJ
+                  <input
+                    aria-label="CNPJ"
+                    className={field}
+                    inputMode="numeric"
+                    placeholder="00.000.000/0000-00"
+                    value={company.taxId}
+                    onChange={(event) =>
+                      setCompany((current) => ({
+                        ...current,
+                        taxId: event.target.value,
+                      }))
+                    }
+                  />
+                </label>
+                <label className={label}>
+                  Endereço
+                  <input
+                    aria-label="Endereço da empresa"
+                    className={field}
+                    value={company.address}
+                    onChange={(event) =>
+                      setCompany((current) => ({
+                        ...current,
+                        address: event.target.value,
+                      }))
+                    }
+                  />
+                </label>
+              </div>
+            </div>
             <dl className="mt-6 grid gap-4 sm:grid-cols-2">
-              <div>
-                <dt className="text-xs text-muted-foreground">Cliente</dt>
-                <dd className="font-semibold">{order.customer}</dd>
-              </div>
-              <div>
-                <dt className="text-xs text-muted-foreground">Endereço</dt>
-                <dd>{order.address}</dd>
-              </div>
               <div className="sm:col-span-2">
                 <dt className="text-xs text-muted-foreground">Solicitação</dt>
                 <dd>{order.request}</dd>

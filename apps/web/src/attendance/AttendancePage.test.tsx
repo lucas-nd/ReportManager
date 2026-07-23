@@ -9,9 +9,25 @@ describe('attendance flow', () => {
     expect(
       screen.getByRole('heading', { name: 'Conferência da ordem de serviço' }),
     ).toBeInTheDocument();
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Confirmar e iniciar' }),
+    const startButton = screen.getByRole('button', {
+      name: 'Confirmar e iniciar',
+    });
+    expect(startButton).toHaveClass('px-4', 'whitespace-normal');
+    expect(screen.getByLabelText('Razão social')).toHaveValue(
+      'FrioSul Alimentos S.A.',
     );
+    expect(screen.getByLabelText('Nome fantasia')).toHaveValue(
+      'FrioSul Alimentos',
+    );
+    expect(screen.getByLabelText('CNPJ')).toHaveValue('12.345.678/0001-90');
+    fireEvent.change(screen.getByLabelText('Endereço da empresa'), {
+      target: { value: '' },
+    });
+    expect(screen.getByLabelText('Endereço da empresa')).toHaveValue('');
+    fireEvent.change(screen.getByLabelText('Endereço da empresa'), {
+      target: { value: 'Rua atualizada, 10' },
+    });
+    fireEvent.click(startButton);
     fireEvent.click(screen.getByRole('button', { name: 'Nova etapa' }));
     fireEvent.click(screen.getByRole('button', { name: 'Concluir etapa' }));
     expect(screen.getByRole('alert')).toHaveTextContent(
