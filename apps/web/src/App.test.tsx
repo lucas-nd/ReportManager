@@ -1,9 +1,23 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 
 import { App } from './App.js';
 
+function signIn(email: string, password: string) {
+  fireEvent.change(screen.getByLabelText('E-mail'), {
+    target: { value: email },
+  });
+  fireEvent.change(screen.getByLabelText('Senha'), {
+    target: { value: password },
+  });
+  fireEvent.click(screen.getByRole('button', { name: /^Entrar$/ }));
+}
+
 describe('App', () => {
+  beforeEach(() => {
+    window.localStorage.clear();
+  });
+
   it('renders the login page at /login', () => {
     window.history.pushState({}, '', '/login');
 
@@ -19,13 +33,7 @@ describe('App', () => {
 
     render(<App />);
 
-    fireEvent.change(screen.getByLabelText('E-mail'), {
-      target: { value: 'admin@fieldflow.local' },
-    });
-    fireEvent.change(screen.getByLabelText('Senha'), {
-      target: { value: 'admin123' },
-    });
-    fireEvent.click(screen.getByRole('button', { name: /^Entrar$/ }));
+    signIn('admin@fieldflow.local', 'admin123');
 
     expect(
       screen.getByRole('heading', { name: 'Painel administrativo' }),
@@ -37,16 +45,71 @@ describe('App', () => {
 
     render(<App />);
 
-    fireEvent.change(screen.getByLabelText('E-mail'), {
-      target: { value: 'tecnico@fieldflow.local' },
-    });
-    fireEvent.change(screen.getByLabelText('Senha'), {
-      target: { value: 'tecnico123' },
-    });
-    fireEvent.click(screen.getByRole('button', { name: /^Entrar$/ }));
+    signIn('tecnico@fieldflow.local', 'tecnico123');
 
     expect(
       screen.getByRole('heading', { name: 'Visão geral' }),
+    ).toBeInTheDocument();
+  });
+
+  it('restores the authenticated user after the application remounts', () => {
+    window.history.pushState({}, '', '/login');
+
+    const { unmount } = render(<App />);
+
+    signIn('admin@fieldflow.local', 'admin123');
+
+    unmount();
+    window.history.pushState({}, '', '/admin');
+    render(<App />);
+
+    expect(
+      screen.getByRole('heading', { name: 'Painel administrativo' }),
+    ).toBeInTheDocument();
+  });
+
+  it('ignores an invalid persisted session', () => {
+    window.localStorage.setItem(
+      'report-manager-session',
+      JSON.stringify({ id: 'admin-1', role: 'unsupported' }),
+    );
+    window.history.pushState({}, '', '/admin');
+
+    render(<App />);
+
+    expect(
+      screen.getByRole('heading', { name: 'Acesse sua conta' }),
+    ).toBeInTheDocument();
+  });
+
+  it('honors an explicitly signed-out user over persisted data', () => {
+    window.localStorage.setItem(
+      'report-manager-session',
+      JSON.stringify({ id: 'admin-1', role: 'administrator' }),
+    );
+    window.history.pushState({}, '', '/admin');
+
+    render(<App currentUser={null} />);
+
+    expect(
+      screen.getByRole('heading', { name: 'Acesse sua conta' }),
+    ).toBeInTheDocument();
+  });
+
+  it('does not restore the user after sign out', () => {
+    window.history.pushState({}, '', '/login');
+
+    const { unmount } = render(<App />);
+
+    signIn('tecnico@fieldflow.local', 'tecnico123');
+    fireEvent.click(screen.getByRole('button', { name: 'Sair' }));
+
+    unmount();
+    window.history.pushState({}, '', '/dashboard');
+    render(<App />);
+
+    expect(
+      screen.getByRole('heading', { name: 'Acesse sua conta' }),
     ).toBeInTheDocument();
   });
 

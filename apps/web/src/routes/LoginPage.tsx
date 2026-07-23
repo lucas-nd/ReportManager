@@ -3,7 +3,6 @@ import { useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Button } from '../components/ui/button.js';
-import { Checkbox } from '../components/ui/checkbox.js';
 import { Input } from '../components/ui/input.js';
 import { useSession } from '../auth/SessionContext.js';
 
@@ -17,7 +16,6 @@ export function LoginPage() {
   const [password, setPassword] = useState('');
   const [authenticationError, setAuthenticationError] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -146,19 +144,6 @@ export function LoginPage() {
                 </button>
               </div>
             </div>
-
-            <label
-              className="flex min-h-11 cursor-pointer items-center gap-3 rounded-xl text-sm text-muted-foreground outline-none"
-              htmlFor="remember-me"
-            >
-              <Checkbox
-                id="remember-me"
-                aria-label="Manter-me conectado"
-                checked={rememberMe}
-                onCheckedChange={(checked) => setRememberMe(checked === true)}
-              />
-              Manter-me conectado
-            </label>
 
             {authenticationError && (
               <p
