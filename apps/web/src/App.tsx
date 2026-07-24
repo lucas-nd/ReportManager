@@ -20,6 +20,7 @@ import {
   SyncPage,
   TechnicianDashboardPage,
 } from './routes/TechnicianPages.js';
+import { AttendancePage } from './attendance/AttendancePage.js';
 import { ThemeProvider } from './theme/ThemeProvider.js';
 
 function HomeRedirect() {
@@ -97,6 +98,10 @@ export function App({ currentUser }: AppProps) {
             <Route element={<TechnicianLayoutRoute />}>
               <Route path="/dashboard" element={<TechnicianDashboardPage />} />
               <Route path="/services" element={<ServicesPage />} />
+              <Route
+                path="/services/:serviceOrderId/attendance"
+                element={<AttendancePage />}
+              />
               <Route path="/reports" element={<ReportsPage />} />
               <Route path="/pending-uploads" element={<PendingUploadsPage />} />
               <Route path="/sync" element={<SyncPage />} />
