@@ -6,7 +6,7 @@ import {
   Play,
   Plus,
 } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { PageContainer } from '../components/layout/PageContainer.js';
 import { Button } from '../components/ui/button.js';
@@ -96,6 +96,7 @@ export function AttendancePage() {
     equipmentCondition: '',
   });
   const attachments = useMemo(() => new AttachmentStore(), []);
+  useEffect(() => () => attachments.clear(), [attachments]);
   const openStep = steps.find((item) => item.status !== 'completed');
   const updateDraft = <K extends keyof Step>(key: K, value: Step[K]) =>
     setDraft((current) => ({ ...current, [key]: value }));

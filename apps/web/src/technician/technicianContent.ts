@@ -1,9 +1,7 @@
 import {
   CircleUserRound,
-  CloudUpload,
   FileText,
   Gauge,
-  RadioTower,
   Wrench,
   type LucideIcon,
 } from 'lucide-react';
@@ -19,13 +17,6 @@ export const technicianNavigation: TechnicianNavigationItem[] = [
   { icon: Gauge, label: 'Dashboard', path: '/dashboard' },
   { icon: Wrench, label: 'Serviços', path: '/services' },
   { icon: FileText, label: 'Relatórios', path: '/reports' },
-  {
-    icon: CloudUpload,
-    label: 'Uploads pendentes',
-    path: '/pending-uploads',
-    pendingCount: 12,
-  },
-  { icon: RadioTower, label: 'Sincronização', path: '/sync' },
   { icon: CircleUserRound, label: 'Minha conta', path: '/account' },
 ];
 

@@ -1,9 +1,8 @@
 import { Check, ChevronDown } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { cn } from '../../lib/utils.js';
-
 export type SelectOption = { value: string; label: string };
-type SelectProps = {
+type Props = {
   label: string;
   options: SelectOption[];
   value: string;
@@ -11,7 +10,6 @@ type SelectProps = {
   disabled?: boolean;
   className?: string;
 };
-
 export function Select({
   label,
   options,
@@ -19,29 +17,74 @@ export function Select({
   onValueChange,
   disabled,
   className,
-}: SelectProps) {
+}: Props) {
   const [open, setOpen] = useState(false);
+  const [active, setActive] = useState(
+    Math.max(
+      0,
+      options.findIndex((o) => o.value === value),
+    ),
+  );
   const root = useRef<HTMLSpanElement>(null);
-  const selected = options.find((option) => option.value === value);
+  const trigger = useRef<HTMLButtonElement>(null);
+  const id = useId();
+  const selected = options.find((o) => o.value === value);
+  const close = () => {
+    setOpen(false);
+    trigger.current?.focus();
+  };
   useEffect(() => {
-    const close = (event: PointerEvent) => {
-      if (!root.current?.contains(event.target as Node)) setOpen(false);
+    const pointer = (e: PointerEvent) => {
+      if (!root.current?.contains(e.target as Node)) setOpen(false);
     };
-    document.addEventListener('pointerdown', close);
-    return () => document.removeEventListener('pointerdown', close);
+    document.addEventListener('pointerdown', pointer);
+    return () => document.removeEventListener('pointerdown', pointer);
   }, []);
+  const keyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      close();
+      return;
+    }
+    if (
+      e.key === 'ArrowDown' ||
+      e.key === 'ArrowUp' ||
+      e.key === 'Home' ||
+      e.key === 'End'
+    ) {
+      e.preventDefault();
+      setOpen(true);
+      setActive((current) =>
+        e.key === 'Home'
+          ? 0
+          : e.key === 'End'
+            ? options.length - 1
+            : e.key === 'ArrowDown'
+              ? (current + 1) % options.length
+              : (current - 1 + options.length) % options.length,
+      );
+    }
+    if (e.key === 'Enter' && open) {
+      e.preventDefault();
+      onValueChange(options[active]?.value ?? '');
+      close();
+    }
+  };
   return (
     <span className="relative mt-1 block" ref={root}>
       <button
+        ref={trigger}
         type="button"
         role="combobox"
         aria-label={label}
         aria-expanded={open}
-        aria-controls={`${label}-options`}
+        aria-controls={`${id}-options`}
+        aria-activedescendant={open ? `${id}-option-${active}` : undefined}
         disabled={disabled}
-        onClick={() => setOpen((current) => !current)}
+        onClick={() => setOpen((v) => !v)}
+        onKeyDown={keyDown}
         className={cn(
-          'flex h-11 w-full items-center justify-between rounded-xl border border-border bg-surface py-2 pr-3 pl-3 text-left text-sm text-foreground outline-none transition-colors hover:border-brand/40 focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/20 disabled:cursor-not-allowed disabled:opacity-50',
+          'flex h-11 w-full items-center justify-between rounded-xl border border-border bg-surface px-3 text-left text-sm outline-none hover:border-brand/40 focus-visible:ring-2 focus-visible:ring-ring/20',
           className,
         )}
       >
@@ -53,36 +96,37 @@ export function Select({
             'size-4 shrink-0 text-muted-foreground transition-transform',
             open && 'rotate-180',
           )}
-          aria-hidden="true"
         />
       </button>
       {open && (
         <div
-          id={`${label}-options`}
+          id={`${id}-options`}
           role="listbox"
           aria-label={label}
           className="absolute z-50 mt-2 max-h-64 w-full overflow-auto rounded-xl border border-border bg-surface p-1.5 shadow-xl shadow-overlay/15"
         >
-          {options.map((option) => (
+          {options.map((option, index) => (
             <button
+              id={`${id}-option-${index}`}
               key={option.value}
+              tabIndex={-1}
               type="button"
               role="option"
               aria-selected={option.value === value}
+              onMouseEnter={() => setActive(index)}
               onClick={() => {
                 onValueChange(option.value);
-                setOpen(false);
+                close();
               }}
               className={cn(
-                'flex min-h-10 w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm outline-none hover:bg-surface-muted focus-visible:bg-surface-muted focus-visible:ring-2 focus-visible:ring-ring',
+                'flex min-h-10 w-full items-center justify-between rounded-lg px-3 py-2 text-left text-sm outline-none',
+                index === active && 'bg-surface-muted',
                 option.value === value &&
                   'bg-brand/10 font-semibold text-brand',
               )}
             >
               {option.label}
-              {option.value === value && (
-                <Check className="size-4" aria-hidden="true" />
-              )}
+              {option.value === value && <Check className="size-4" />}
             </button>
           ))}
         </div>

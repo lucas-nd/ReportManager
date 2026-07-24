@@ -41,7 +41,6 @@ describe('technician experience', () => {
       expect(within(card!).getByText(value)).toBeInTheDocument();
     }
 
-    expect(screen.getByText('12')).toBeInTheDocument();
     expect(screen.getByText('FrioSul Alimentos')).toBeInTheDocument();
     expect(
       screen.getByText('Av. das Indústrias, 1840 · Distrito Industrial'),
@@ -59,11 +58,16 @@ describe('technician experience', () => {
     const destinations: Array<readonly [string, string]> = [
       ['Serviços', '/services'],
       ['Relatórios', '/reports'],
-      ['Uploads pendentes', '/pending-uploads'],
-      ['Sincronização', '/sync'],
       ['Minha conta', '/account'],
       ['Dashboard', '/dashboard'],
     ];
+
+    expect(
+      screen.queryByRole('link', { name: /Uploads pendentes/ }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: /Sincronização/ }),
+    ).not.toBeInTheDocument();
 
     for (const [label, path] of destinations) {
       fireEvent.click(
