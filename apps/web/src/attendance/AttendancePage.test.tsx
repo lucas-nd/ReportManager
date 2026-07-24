@@ -3,6 +3,36 @@ import { describe, expect, it } from 'vitest';
 import { App } from '../App.js';
 const technician = { id: 'tech-1', role: 'technician' } as const;
 describe('attendance flow', () => {
+  it('opens attendance when secure-context UUID is unavailable', () => {
+    const originalRandomUuid = globalThis.crypto.randomUUID;
+    const originalDescriptor = Object.getOwnPropertyDescriptor(
+      globalThis.crypto,
+      'randomUUID',
+    );
+    Object.defineProperty(globalThis.crypto, 'randomUUID', {
+      configurable: true,
+      value: undefined,
+    });
+    try {
+      window.history.pushState({}, '', '/services/OS-2026-0142/attendance');
+      render(<App currentUser={technician} />);
+      expect(
+        screen.getByRole('heading', {
+          name: 'Conferência da ordem de serviço',
+        }),
+      ).toBeInTheDocument();
+    } finally {
+      if (originalDescriptor) {
+        Object.defineProperty(
+          globalThis.crypto,
+          'randomUUID',
+          originalDescriptor,
+        );
+      } else {
+        delete (globalThis.crypto as Partial<Crypto>).randomUUID;
+      }
+    }
+  });
   it('starts from order checking and blocks incomplete steps', () => {
     window.history.pushState({}, '', '/services/OS-2026-0142/attendance');
     render(<App currentUser={technician} />);

@@ -12,6 +12,7 @@ import { PageContainer } from '../components/layout/PageContainer.js';
 import { Button } from '../components/ui/button.js';
 import { DateTimeInput } from '../components/ui/date-time-input.js';
 import { Select } from '../components/ui/select.js';
+import { createSessionId } from '../lib/sessionId.js';
 import { AttachmentStore } from '../workflow/engine.js';
 
 type StepStatus = 'active' | 'paused' | 'completed';
@@ -48,7 +49,7 @@ const order = {
   request: 'Baixa eficiência térmica e ruído anormal no circuito secundário.',
 };
 const emptyStep = (): Step => ({
-  id: crypto.randomUUID(),
+  id: createSessionId('step'),
   type: '',
   equipment: [],
   startedAt: new Date().toISOString().slice(0, 16),

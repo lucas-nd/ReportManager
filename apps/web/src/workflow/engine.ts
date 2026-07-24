@@ -1,3 +1,5 @@
+import { createSessionId } from '../lib/sessionId.js';
+
 import type {
   WorkflowAnswers,
   WorkflowCondition,
@@ -127,7 +129,7 @@ export class AttachmentStore {
   private files = new Map<string, File>();
   private previews = new Map<string, string>();
   add(file: File) {
-    const id = `attachment-${crypto.randomUUID()}`;
+    const id = createSessionId('attachment');
     this.files.set(id, file);
     return id;
   }
