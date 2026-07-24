@@ -18,7 +18,38 @@ export const attendanceTemplate = parseWorkflowTemplate({
     {
       id: 'checkOrder',
       title: 'Conferência da ordem de serviço',
-      sections: [],
+      sections: [
+        {
+          id: 'companySection',
+          title: 'Dados da empresa',
+          fields: [
+            {
+              id: 'companyLegalName',
+              label: 'Razão social',
+              binding: 'company.legalName',
+              type: 'text',
+            },
+            {
+              id: 'companyTradeName',
+              label: 'Nome fantasia',
+              binding: 'company.tradeName',
+              type: 'text',
+            },
+            {
+              id: 'companyTaxId',
+              label: 'CNPJ',
+              binding: 'company.taxId',
+              type: 'text',
+            },
+            {
+              id: 'companyAddress',
+              label: 'Endereço',
+              binding: 'company.address',
+              type: 'text',
+            },
+          ],
+        },
+      ],
       actions: [
         {
           id: 'start',

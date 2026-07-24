@@ -36,14 +36,12 @@ type Step = {
 };
 const order = {
   id: 'OS-2026-0142',
-  customer: 'FrioSul Alimentos',
   company: {
     legalName: 'FrioSul Alimentos S.A.',
     tradeName: 'FrioSul Alimentos',
     taxId: '12.345.678/0001-90',
     address: 'Av. das Indústrias, 1840 · Distrito Industrial',
   },
-  address: 'Av. das Indústrias, 1840 · Distrito Industrial',
   equipment: ['Chiller Carrier 30XW', 'Bomba Grundfos NB 50-200'],
   request: 'Baixa eficiência térmica e ruído anormal no circuito secundário.',
 };
@@ -673,7 +671,11 @@ export function AttendancePage() {
           <div>
             <p className="font-mono text-xs text-brand">{order.id}</p>
             <h2 className="text-2xl font-bold">Atendimento</h2>
-            <p className="text-muted-foreground">{order.customer}</p>
+            <p className="text-muted-foreground">
+              {company.tradeName ||
+                company.legalName ||
+                'Empresa não identificada'}
+            </p>
           </div>
           <span
             className={`rounded-full px-3 py-1 text-xs font-semibold ${attendancePaused ? 'bg-warning/15' : 'bg-success/15'}`}
@@ -711,7 +713,8 @@ export function AttendancePage() {
               )}
               {steps.map((step, index) => (
                 <button
-                  className="w-full rounded-xl border border-border p-4 text-left"
+                  className="w-full rounded-xl border border-border p-4 text-left disabled:cursor-default disabled:opacity-80"
+                  disabled={step.status === 'completed'}
                   key={step.id}
                   onClick={() => editStep(step)}
                 >

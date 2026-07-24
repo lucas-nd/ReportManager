@@ -27,7 +27,11 @@ describe('attendance flow', () => {
     fireEvent.change(screen.getByLabelText('Endereço da empresa'), {
       target: { value: 'Rua atualizada, 10' },
     });
+    fireEvent.change(screen.getByLabelText('Nome fantasia'), {
+      target: { value: 'FrioSul Atualizada' },
+    });
     fireEvent.click(startButton);
+    expect(screen.getByText('FrioSul Atualizada')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Nova etapa' }));
     fireEvent.click(screen.getByRole('button', { name: 'Concluir etapa' }));
     expect(screen.getByRole('alert')).toHaveTextContent(
