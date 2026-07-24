@@ -90,13 +90,33 @@
   }
 
   button,
-  input {
+  input,
+  select {
     font: inherit;
   }
 
   button,
   a {
     -webkit-tap-highlight-color: transparent;
+  }
+
+  .date-time-input {
+    color-scheme: light;
+  }
+
+  .dark .date-time-input {
+    color-scheme: dark;
+  }
+
+  .date-time-input::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    border-radius: 0.5rem;
+    padding: 0.375rem;
+    background-color: color-mix(in oklab, var(--brand) 10%, transparent);
+  }
+
+  .date-time-input::-webkit-calendar-picker-indicator:hover {
+    background-color: color-mix(in oklab, var(--brand) 18%, transparent);
   }
 
   ::selection {

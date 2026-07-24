@@ -33,6 +33,13 @@ describe('attendance flow', () => {
     fireEvent.click(startButton);
     expect(screen.getByText('FrioSul Atualizada')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Nova etapa' }));
+    expect(screen.getByLabelText('Tipo da etapa')).toHaveClass(
+      'appearance-none',
+    );
+    expect(screen.getByLabelText('Início')).toHaveClass(
+      'date-time-input',
+      'font-mono',
+    );
     fireEvent.click(screen.getByRole('button', { name: 'Concluir etapa' }));
     expect(screen.getByRole('alert')).toHaveTextContent(
       'Informe o tipo da etapa',

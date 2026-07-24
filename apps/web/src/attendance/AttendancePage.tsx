@@ -10,6 +10,8 @@ import { useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { PageContainer } from '../components/layout/PageContainer.js';
 import { Button } from '../components/ui/button.js';
+import { DateTimeInput } from '../components/ui/date-time-input.js';
+import { Select } from '../components/ui/select.js';
 import { AttachmentStore } from '../workflow/engine.js';
 
 type StepStatus = 'active' | 'paused' | 'completed';
@@ -308,9 +310,8 @@ export function AttendancePage() {
           <div className="mt-5 grid gap-5 rounded-2xl border border-border bg-card p-6 sm:grid-cols-2">
             <label className={label}>
               Tipo
-              <select
+              <Select
                 aria-label="Tipo da etapa"
-                className={field}
                 value={draft.type}
                 onChange={(event) => updateDraft('type', event.target.value)}
               >
@@ -320,7 +321,7 @@ export function AttendancePage() {
                 <option>Reparo</option>
                 <option>Teste operacional</option>
                 <option>Outro</option>
-              </select>
+              </Select>
             </label>
             {draft.type === 'Outro' && (
               <label className={label}>
@@ -358,10 +359,9 @@ export function AttendancePage() {
             </fieldset>
             <label className={label}>
               Início
-              <input
+              <DateTimeInput
                 aria-label="Início"
                 type="datetime-local"
-                className={field}
                 value={draft.startedAt}
                 onChange={(event) =>
                   updateDraft('startedAt', event.target.value)
@@ -370,10 +370,9 @@ export function AttendancePage() {
             </label>
             <label className={label}>
               Fim
-              <input
+              <DateTimeInput
                 aria-label="Fim"
                 type="datetime-local"
-                className={field}
                 value={draft.endedAt ?? ''}
                 onChange={(event) => updateDraft('endedAt', event.target.value)}
               />
@@ -479,9 +478,8 @@ export function AttendancePage() {
           <ErrorBox />
           <label className={`${label} mt-5 block`}>
             Motivo
-            <select
+            <Select
               aria-label="Motivo da pausa"
-              className={field}
               value={pauseReason}
               onChange={(event) => setPauseReason(event.target.value)}
             >
@@ -490,7 +488,7 @@ export function AttendancePage() {
               <option>Aguardando cliente</option>
               <option>Condição insegura</option>
               <option>Outro</option>
-            </select>
+            </Select>
           </label>
           <label className={`${label} mt-4 block`}>
             Observação
