@@ -33,13 +33,30 @@ describe('attendance flow', () => {
     fireEvent.click(startButton);
     expect(screen.getByText('FrioSul Atualizada')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Nova etapa' }));
-    expect(screen.getByLabelText('Tipo da etapa')).toHaveClass(
-      'appearance-none',
+    fireEvent.click(screen.getByRole('combobox', { name: 'Tipo da etapa' }));
+    expect(screen.getByRole('listbox', { name: 'Tipo da etapa' })).toHaveClass(
+      'bg-surface',
     );
-    expect(screen.getByLabelText('Início')).toHaveClass(
-      'date-time-input',
-      'font-mono',
-    );
+    expect(
+      screen.getByRole('option', { name: 'Diagnóstico' }),
+    ).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Início' }));
+    expect(
+      screen.getByRole('dialog', { name: 'Escolher data e hora' }),
+    ).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Início' }));
+    Object.defineProperty(URL, 'createObjectURL', {
+      configurable: true,
+      value: () => 'blob:preview-photo',
+    });
+    fireEvent.change(screen.getByLabelText('Adicionar foto'), {
+      target: {
+        files: [new File(['photo'], 'equipamento.jpg', { type: 'image/jpeg' })],
+      },
+    });
+    expect(
+      screen.getByRole('img', { name: 'Preview de equipamento.jpg' }),
+    ).toHaveAttribute('src', 'blob:preview-photo');
     fireEvent.click(screen.getByRole('button', { name: 'Concluir etapa' }));
     expect(screen.getByRole('alert')).toHaveTextContent(
       'Informe o tipo da etapa',

@@ -125,6 +125,7 @@ export function transition(
 }
 export class AttachmentStore {
   private files = new Map<string, File>();
+  private previews = new Map<string, string>();
   add(file: File) {
     const id = `attachment-${crypto.randomUUID()}`;
     this.files.set(id, file);
@@ -133,7 +134,18 @@ export class AttachmentStore {
   get(id: string) {
     return this.files.get(id);
   }
+  preview(id: string) {
+    const existing = this.previews.get(id);
+    if (existing) return existing;
+    const file = this.files.get(id);
+    if (!file) return undefined;
+    const url = URL.createObjectURL(file);
+    this.previews.set(id, url);
+    return url;
+  }
   clear() {
+    this.previews.forEach((url) => URL.revokeObjectURL?.(url));
+    this.previews.clear();
     this.files.clear();
   }
 }

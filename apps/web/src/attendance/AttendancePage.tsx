@@ -311,17 +311,21 @@ export function AttendancePage() {
             <label className={label}>
               Tipo
               <Select
-                aria-label="Tipo da etapa"
+                label="Tipo da etapa"
                 value={draft.type}
-                onChange={(event) => updateDraft('type', event.target.value)}
-              >
-                <option value="">Selecione</option>
-                <option>Diagnóstico</option>
-                <option>Manutenção preventiva</option>
-                <option>Reparo</option>
-                <option>Teste operacional</option>
-                <option>Outro</option>
-              </Select>
+                onValueChange={(value) => updateDraft('type', value)}
+                options={[
+                  { value: '', label: 'Selecione' },
+                  { value: 'Diagnóstico', label: 'Diagnóstico' },
+                  {
+                    value: 'Manutenção preventiva',
+                    label: 'Manutenção preventiva',
+                  },
+                  { value: 'Reparo', label: 'Reparo' },
+                  { value: 'Teste operacional', label: 'Teste operacional' },
+                  { value: 'Outro', label: 'Outro' },
+                ]}
+              />
             </label>
             {draft.type === 'Outro' && (
               <label className={label}>
@@ -360,21 +364,19 @@ export function AttendancePage() {
             <label className={label}>
               Início
               <DateTimeInput
-                aria-label="Início"
+                label="Início"
                 type="datetime-local"
                 value={draft.startedAt}
-                onChange={(event) =>
-                  updateDraft('startedAt', event.target.value)
-                }
+                onValueChange={(value) => updateDraft('startedAt', value)}
               />
             </label>
             <label className={label}>
               Fim
               <DateTimeInput
-                aria-label="Fim"
+                label="Fim"
                 type="datetime-local"
                 value={draft.endedAt ?? ''}
-                onChange={(event) => updateDraft('endedAt', event.target.value)}
+                onValueChange={(value) => updateDraft('endedAt', value)}
               />
             </label>
             <label className={`${label} sm:col-span-2`}>
@@ -435,11 +437,30 @@ export function AttendancePage() {
                   }}
                 />
               </label>
-              {draft.photos.map((photo) => (
-                <p className="mt-2 text-sm" key={photo.reference}>
-                  {photo.name} · {photo.category}
-                </p>
-              ))}
+              {draft.photos.length > 0 && (
+                <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                  {draft.photos.map((photo) => (
+                    <figure
+                      className="overflow-hidden rounded-xl border border-border bg-surface"
+                      key={photo.reference}
+                    >
+                      <img
+                        alt={'Preview de ' + photo.name}
+                        className="aspect-video w-full bg-surface-muted object-cover"
+                        src={attachments.preview(photo.reference)}
+                      />
+                      <figcaption className="flex items-center justify-between gap-2 px-3 py-2 text-xs">
+                        <span className="truncate font-medium">
+                          {photo.name}
+                        </span>
+                        <span className="shrink-0 font-mono text-[10px] uppercase text-muted-foreground">
+                          {photo.category}
+                        </span>
+                      </figcaption>
+                    </figure>
+                  ))}
+                </div>
+              )}
             </div>
             <label className={`${label} sm:col-span-2`}>
               Observações
@@ -479,16 +500,17 @@ export function AttendancePage() {
           <label className={`${label} mt-5 block`}>
             Motivo
             <Select
-              aria-label="Motivo da pausa"
+              label="Motivo da pausa"
               value={pauseReason}
-              onChange={(event) => setPauseReason(event.target.value)}
-            >
-              <option value="">Selecione</option>
-              <option>Aguardando peça</option>
-              <option>Aguardando cliente</option>
-              <option>Condição insegura</option>
-              <option>Outro</option>
-            </Select>
+              onValueChange={setPauseReason}
+              options={[
+                { value: '', label: 'Selecione' },
+                { value: 'Aguardando peça', label: 'Aguardando peça' },
+                { value: 'Aguardando cliente', label: 'Aguardando cliente' },
+                { value: 'Condição insegura', label: 'Condição insegura' },
+                { value: 'Outro', label: 'Outro' },
+              ]}
+            />
           </label>
           <label className={`${label} mt-4 block`}>
             Observação
